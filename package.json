@@ -1,0 +1,30 @@
+{
+  "name": "my-chart-mcp",
+  "version": "0.1.0",
+  "type": "module",
+  "bin": { "my-chart-mcp": "./dist/server.js" },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx src/server.ts",
+    "inspect": "npx @modelcontextprotocol/inspector tsx src/server.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "files": ["dist"],
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "d3": "^7.9.0",
+    "jsdom": "^29.0.2",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@types/d3": "^7.4.3",
+    "@types/jsdom": "^28.0.1",
+    "@types/node": "^25.6.0",
+    "tsx": "^4.21.0",
+    "typescript": "^6.0.3"
+  }
+}

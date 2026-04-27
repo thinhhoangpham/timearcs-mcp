@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.DS_Store
+*.log
+.idea/
+
+# Unused upstream demos — only TimeArcs-master/Text is read by the MCP server.
+TimeArcs-master/IMDB/
+TimeArcs-master/IndexCards/
+TimeArcs-master/League/
+TimeArcs-master/Publication/
