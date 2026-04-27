@@ -1,5 +1,5 @@
 import type { RenderInput } from "./types.js";
-import { SOURCES } from "./sources.js";
+import type { Sources } from "./sources-node.js";
 import {
   resolveSlotMapping,
   resolveSlotColors,
@@ -10,7 +10,7 @@ import {
 import { patchMainJs } from "./patch-main.js";
 import { escapeHtml } from "./escape.js";
 
-export function renderTimeArcsHtml(args: RenderInput): string {
+export function renderTimeArcsHtml(args: RenderInput, sources: Sources): string {
   const title = args.title ?? "TimeArcs";
 
   const { catToSlot, nodeCatSlot } = resolveSlotMapping(args.nodes, args.categorySlots);
@@ -29,7 +29,7 @@ export function renderTimeArcsHtml(args: RenderInput): string {
   const rows = buildRows(args.links, nodeCatSlot, bucketOf);
   const dataLiteral = JSON.stringify(rows).replace(/</g, "\\u003c");
 
-  const mainPatched = patchMainJs(SOURCES.mainRaw, { minYear, maxYear, NUM_BUCKETS });
+  const mainPatched = patchMainJs(sources.mainRaw, { minYear, maxYear, NUM_BUCKETS });
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -77,7 +77,7 @@ export function renderTimeArcsHtml(args: RenderInput): string {
 })();
 </script>
 <script>
-${SOURCES.util}
+${sources.util}
 </script>
 <script>
 // Override drawColorLegend to render one row per actual user category instead of the
@@ -134,7 +134,7 @@ ${SOURCES.util}
 })();
 </script>
 <script>
-${SOURCES.stopList}
+${sources.stopList}
 </script>
 <script>
 ${mainPatched}

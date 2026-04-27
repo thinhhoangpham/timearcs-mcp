@@ -2,14 +2,23 @@
   "name": "my-chart-mcp",
   "version": "0.1.0",
   "type": "module",
-  "bin": { "my-chart-mcp": "./dist/server.js" },
+  "bin": {
+    "my-chart-mcp": "./dist/server.js"
+  },
+  "main": "dist/browser/timearcs.umd.js",
+  "module": "dist/browser/timearcs.esm.js",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && vite build",
+    "build:mcp": "tsc",
+    "build:lib": "vite build",
     "dev": "tsx src/server.ts",
     "inspect": "npx @modelcontextprotocol/inspector tsx src/server.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -25,6 +34,7 @@
     "@types/jsdom": "^28.0.1",
     "@types/node": "^25.6.0",
     "tsx": "^4.21.0",
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "vite": "^8.0.10"
   }
 }

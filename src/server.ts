@@ -6,7 +6,14 @@ import {
   ListToolsRequestSchema,
 } from "@modelcontextprotocol/sdk/types.js";
 import { renderTimeArcsHtml } from "./core/render-html.js";
+import { renderBootstrapHtml } from "./core/render-bootstrap.js";
+import { SOURCES as nodeSources } from "./core/sources-node.js";
 import type { InputNode, InputLink } from "./core/types.js";
+
+// When this tag exists on GitHub, jsDelivr will serve the browser library.
+// Run: git tag v0.1.0 && git push origin v0.1.0 before using the bootstrap mode.
+const LIB_URL =
+  "https://cdn.jsdelivr.net/gh/thinhhoangpham/timearcs-mcp@v0.1.0/dist/browser/timearcs.umd.js";
 
 const server = new Server(
   { name: "my-chart-mcp", version: "0.1.0" },
@@ -99,6 +106,13 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
               "Minimum number of co-occurrences for a node pair to render an arc (default 1). " +
               "Raise this to suppress low-frequency connections and reduce clutter in dense graphs.",
           },
+          inline: {
+            type: "boolean",
+            description:
+              "If true, returns a fully self-contained HTML with all upstream code inlined (~65KB). " +
+              "If false (default), returns a small bootstrap HTML that loads the TimeArcs library " +
+              "from a public CDN — much smaller, but requires network access when the artifact is opened.",
+          },
         },
         required: ["nodes", "links"],
       },
@@ -117,9 +131,13 @@ server.setRequestHandler(CallToolRequestSchema, async (req) => {
     categoryColors?: Record<string, string>;
     timeRange?: { min?: string; max?: string };
     linkThreshold?: number;
+    inline?: boolean;
   };
 
-  const html = renderTimeArcsHtml(args);
+  const html =
+    args.inline === true
+      ? renderTimeArcsHtml(args, nodeSources)
+      : renderBootstrapHtml(args, LIB_URL);
   const catCount = new Set(args.nodes.map((n) => n.category ?? "default")).size;
 
   const layoutNotes: string[] = [];
