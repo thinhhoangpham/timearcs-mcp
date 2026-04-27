@@ -109,9 +109,10 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
           inline: {
             type: "boolean",
             description:
-              "If true, returns a fully self-contained HTML with all upstream code inlined (~65KB). " +
-              "If false (default), returns a small bootstrap HTML that loads the TimeArcs library " +
-              "from a public CDN — much smaller, but requires network access when the artifact is opened.",
+              "If true (default), returns a fully self-contained HTML with all upstream code inlined (~65KB). " +
+              "Works in Claude Desktop artifacts. Set to false only when embedding in a webpage where loading " +
+              "from cdn.jsdelivr.net is permitted, to get a small ~3KB bootstrap that fetches the TimeArcs " +
+              "library from a public CDN.",
           },
         },
         required: ["nodes", "links"],
@@ -135,9 +136,9 @@ server.setRequestHandler(CallToolRequestSchema, async (req) => {
   };
 
   const html =
-    args.inline === true
-      ? renderTimeArcsHtml(args, nodeSources)
-      : renderBootstrapHtml(args, LIB_URL);
+    args.inline === false
+      ? renderBootstrapHtml(args, LIB_URL)
+      : renderTimeArcsHtml(args, nodeSources);
   const catCount = new Set(args.nodes.map((n) => n.category ?? "default")).size;
 
   const layoutNotes: string[] = [];
