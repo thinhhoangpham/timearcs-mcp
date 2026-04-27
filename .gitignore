@@ -1,5 +1,6 @@
 node_modules/
-dist/
+dist/*
+!dist/browser/
 .DS_Store
 *.log
 .idea/
